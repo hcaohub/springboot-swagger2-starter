@@ -1,6 +1,7 @@
 package com.hc.springboot.swagger2;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Swagger2ImportBeanDefinitionRegistrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
 	private static final Logger LOGGER = LoggerFactory.getLogger( Swagger2ImportBeanDefinitionRegistrar.class );
@@ -41,9 +43,9 @@ public class Swagger2ImportBeanDefinitionRegistrar implements EnvironmentAware, 
 				Docket docket = new Docket( DocumentationType.SWAGGER_2 );
 				ApiSelectorBuilder selectorBuilder = docket.select();
 				if ( _docketConfig.getBasePackage() != null && !_docketConfig.getBasePackage().isEmpty() ) {
-					for ( String basePackage : _docketConfig.getBasePackage() ) {
-						selectorBuilder.apis( RequestHandlerSelectors.basePackage( basePackage ) );
-					}
+					//支持多个包
+					Predicate[] predicateArray = _docketConfig.getBasePackage().stream().map(bp->RequestHandlerSelectors.basePackage(bp)).collect(Collectors.toList()).toArray(new Predicate[]{});
+					selectorBuilder.apis(Predicates.or(predicateArray));
 				}
 				if ( _docketConfig.getPathsInclude() != null && !_docketConfig.getPathsInclude().isEmpty() ) {
 					for ( String pathsInclude : _docketConfig.getPathsInclude() ) {
