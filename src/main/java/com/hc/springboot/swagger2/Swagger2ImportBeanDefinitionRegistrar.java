@@ -15,8 +15,7 @@ import org.springframework.util.StringUtils;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
-import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.spring.web.plugins.MyDocket;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,14 +37,15 @@ public class Swagger2ImportBeanDefinitionRegistrar implements EnvironmentAware, 
 			int i = 0;
 			for ( Map.Entry<String, Swagger2Properties.DocketConfig> entry : docketConfig.entrySet() ) {
 				Swagger2Properties.DocketConfig _docketConfig = entry.getValue();
-				BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition( Docket.class );
+				BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition( MyDocket.class );
 
-				Docket docket = new Docket( DocumentationType.SWAGGER_2 );
-				ApiSelectorBuilder selectorBuilder = docket.select();
+				ApiSelectorBuilder selectorBuilder = new ApiSelectorBuilder();
 				if ( _docketConfig.getBasePackage() != null && !_docketConfig.getBasePackage().isEmpty() ) {
-					//支持多个包
-					Predicate[] predicateArray = _docketConfig.getBasePackage().stream().map(bp->RequestHandlerSelectors.basePackage(bp)).collect(Collectors.toList()).toArray(new Predicate[]{});
-					selectorBuilder.apis(Predicates.or(predicateArray));
+					// 支持多个包
+					Predicate[] predicateArray = _docketConfig.getBasePackage().stream()
+							.map( bp -> RequestHandlerSelectors.basePackage( bp ) ).collect( Collectors.toList() )
+							.toArray( new Predicate[] {} );
+					selectorBuilder.apis( Predicates.or( predicateArray ) );
 				}
 				if ( _docketConfig.getPathsInclude() != null && !_docketConfig.getPathsInclude().isEmpty() ) {
 					for ( String pathsInclude : _docketConfig.getPathsInclude() ) {
@@ -60,9 +60,13 @@ public class Swagger2ImportBeanDefinitionRegistrar implements EnvironmentAware, 
 				selectorBuilder.build();
 
 				builder.addConstructorArgValue( DocumentationType.SWAGGER_2 );
-				builder.addPropertyValue( "apiInfo", swagger2Properties.getApiInfoByName( _docketConfig.getApiInfoName() ) );
-				builder.addPropertyValue( "groupName", entry.getKey() );
-				builder.addPropertyValue( "apiSelector", docket.getApiSelector() );
+				builder.addConstructorArgValue(swagger2Properties.getApiInfoByName( _docketConfig.getApiInfoName() ));
+				builder.addConstructorArgValue( entry.getKey() );
+				builder.addConstructorArgValue( selectorBuilder.build());
+				// builder.addPropertyValue( "apiInfo", swagger2Properties.getApiInfoByName(
+				// _docketConfig.getApiInfoName() ) );
+				// builder.addPropertyValue( "groupName", entry.getKey() );
+				// builder.addPropertyValue( "apiSelector", selectorBuilder.build() );
 				registry.registerBeanDefinition( "docker" + System.currentTimeMillis() + "" + i, builder.getBeanDefinition() );
 				i++;
 			}
