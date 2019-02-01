@@ -2,7 +2,7 @@
 * maven依赖
 ```
 <dependency>
-    <groupId>com.hc.springboot</groupId>
+    <groupId>com.github.hc621311</groupId>
     <artifactId>springboot-swagger2-starter</artifactId>
     <version>1.0.0.RELEASE</version>
 </dependency>
