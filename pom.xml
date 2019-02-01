@@ -6,7 +6,7 @@
     <groupId>com.github.hc621311</groupId>
     <artifactId>springboot-swagger2-starter</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0.RELEASE</version>
+    <version>1.0.2.RELEASE</version>
     <description>HC :: Springboot :: Swagger2 :: Starter</description>
 
     <parent>
@@ -57,7 +57,14 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <id>sonatype-oss-release</id>
