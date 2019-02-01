@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.xyd.springboot</groupId>
+    <groupId>com.hc.springboot</groupId>
     <artifactId>springboot-swagger2-starter</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.0.RELEASE</version>
-    <description>XYD :: Springboot :: Swagger2 Starter</description>
+    <version>1.0.0.RELEASE</version>
+    <description>HC :: Springboot :: Swagger2 :: Starter</description>
 
     <parent>
-        <groupId>com.xyd</groupId>
+        <groupId>com.hc</groupId>
         <artifactId>sb-parent</artifactId>
-        <version>2.0.0.RELEASE</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
 
     <dependencies>
