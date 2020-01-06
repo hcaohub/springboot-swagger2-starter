@@ -6,7 +6,7 @@
     <groupId>com.github.hc621311</groupId>
     <artifactId>springboot-swagger2-starter</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.5.RELEASE</version>
+    <version>1.1.0.RELEASE</version>
     <name>springboot-swagger2-starter</name>
     <description>HC :: Springboot :: Swagger2 :: Starter</description>
     <url>git@github.com:HC621311/springboot-swagger2-starter.git</url>
