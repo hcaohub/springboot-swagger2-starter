@@ -48,8 +48,16 @@ public class Swagger2ImportBeanDefinitionRegistrar implements EnvironmentAware, 
 					selectorBuilder.apis( Predicates.or( predicateArray ) );
 				}
 				if ( _docketConfig.getPathsInclude() != null && !_docketConfig.getPathsInclude().isEmpty() ) {
+					Predicate includePredicate = null;
 					for ( String pathsInclude : _docketConfig.getPathsInclude() ) {
-						selectorBuilder.paths( PathSelectors.regex( pathsInclude ) );
+						if(includePredicate==null){
+							includePredicate= PathSelectors.regex( pathsInclude );
+							continue;
+						}
+						includePredicate=Predicates.or(includePredicate, PathSelectors.regex( pathsInclude ) );
+					}
+					if(includePredicate!=null){
+						selectorBuilder.paths( includePredicate );
 					}
 				}
 				if ( _docketConfig.getPathsExclude() != null && !_docketConfig.getPathsExclude().isEmpty() ) {
